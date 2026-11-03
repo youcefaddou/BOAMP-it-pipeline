@@ -6,6 +6,29 @@ Pipeline de données des appels d'offres IT et télécoms publiés au BOAMP depu
 
 ## Thématique
 
+Les marchés publics informatiques et télécoms en France : qui achète, quoi,
+combien de temps les entreprises ont pour répondre, et qui remporte les marchés.
+Les données viennent du BOAMP, où l'État et les collectivités publient leurs
+appels d'offres et leurs résultats.
+
+## Structure du dépôt
+
+    sql/                 schéma, chargement, analyses, index, réconciliation
+    scripts/ingest/      collecte asynchrone depuis l'API BOAMP
+    scripts/transform/   nettoyage et passage en Parquet
+    scripts/load/        chargement dans PostgreSQL
+    scripts/publish/     publication sur le Hugging Face Hub
+    data/raw/            JSON Lines bruts (non versionnés)
+    data/processed/      Parquet transformés (non versionnés)
+    tests/               tests pytest
+
+## Installation
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    cp .env.example .env   # puis renseigner DATABASE_URL et HF_TOKEN
+
 ## Source et licence
 
 - Source : API BOAMP de la DILA (plateforme Opendatasoft), endpoint `records` de l'API Explore v2.1
