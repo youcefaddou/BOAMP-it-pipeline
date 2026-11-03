@@ -26,8 +26,6 @@ Pipeline de données des appels d'offres IT et télécoms publiés au BOAMP depu
 
 ## Installation
 
-
-
 ```bash
 podman run -d --name boamp-postgres -e POSTGRES_USER=boamp -e POSTGRES_PASSWORD=boamp \
   -e POSTGRES_DB=boamp -p 5432:5432 -v boamp-pgdata:/var/lib/postgresql \
@@ -82,5 +80,20 @@ Mesures du 03/11/2026 : 84 809 annonces, 0 en quarantaine, 4,3 s, 7,7 Mo de Parq
 - Réconciliation source / cible par FULL JOIN (sql/reconciliation.sql) : 0 écart
 
 Mesures du 03/11/2026 : 84 809 annonces, 144 229 descripteurs, 22 s.
+
+## Analyses (sql/)
+
+| Fichier                         | Question                                           | Notions SQL                        |
+| ------------------------------- | -------------------------------------------------- | ---------------------------------- |
+| 01_volume_annuel.sql            | Annonces IT par an et par nature                   | GROUP BY                           |
+| 02_top_acheteurs.sql            | Top 5 des acheteurs par an                         | CTE, ROW_NUMBER, top N             |
+| 03_evolution_mensuelle.sql      | Volume mensuel, moyenne mobile 12 mois, variation  | generate_series, ROWS BETWEEN, LAG |
+| 04_repartition_descripteurs.sql | Catégories les plus fréquentes et leur part      | Jointure, SUM() OVER ()            |
+| 05_top_titulaires.sql           | Entreprises qui gagnent le plus de marchés IT     | CTE, DISTINCT anti fan-out, RANK   |
+| 06_delai_reponse.sql            | Délai moyen pour répondre par famille de marché | Calcul de dates, GROUP BY          |
+| 07_acheteurs_perdus.sql         | Acheteurs actifs en 2024 sans avis en 2025         | NOT EXISTS (anti-join)             |
+
+Limite : un même acheteur peut apparaître sous plusieurs noms
+(ex. " Voies navigables de France " et " VNF Siège Béthune ")
 
 ## Dataset publié
