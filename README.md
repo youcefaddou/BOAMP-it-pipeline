@@ -47,4 +47,20 @@ Pipeline de données des appels d'offres IT et télécoms publiés au BOAMP depu
 
 Mesures du 03/11/2026 : 84 809 annonces, 922 fichiers, 739 Mo, 135 s.
 
+### Transformation (scripts/transform/transform_boamp.py)
+
+- Outil : Pandas, car les données utiles tiennent en mémoire une fois le champ
+  `donnees` retiré (premier choix conseillé par le cours avant HF Datasets ou Spark)
+- Traitement par lots : une année à la fois, jamais les 84 809 annonces en même temps
+- Validation : idweb, date de parution et objet obligatoires, sinon quarantaine dans
+  data/raw/quarantine/invalid_AAAA.jsonl (donnée brute + raison + horodatage)
+- Nettoyage : champs plats conservés, `donnees` et `gestion` retirés (ils contiennent
+  les contacts), dates typées, espaces superflus supprimés
+- Dédoublonnage sur idweb en gardant la dernière version
+- Sorties : annonces_AAAA.parquet et descripteurs_AAAA.parquet (une ligne par
+  couple annonce / descripteur)
+
+Mesures du 03/11/2026 : 84 809 annonces, 0 en quarantaine, 4,3 s, 7,7 Mo de Parquet
+(contre 739 Mo de JSON Lines brut).
+
 ## Dataset publié
