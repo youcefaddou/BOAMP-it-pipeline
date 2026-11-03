@@ -31,3 +31,9 @@ def test_descripteurs_et_champs_listes():
     assert len(descripteurs) == 2
     assert df.iloc[0]["code_departement"] == "13"
     assert df.iloc[0]["nomacheteur"] == "Mairie"
+    
+def test_annonce_lie_liste_devient_texte():
+    brute = annonce("24-1")
+    brute["annonce_lie"] = ["23-100", "23-200"]
+    df, _ = transformer([brute])
+    assert df.iloc[0]["annonce_lie"] == "23-100 ; 23-200"    
