@@ -39,6 +39,11 @@ Pipeline de données des appels d'offres IT et télécoms publiés au BOAMP depu
 - Tri par idweb pour une pagination stable
 - Sortie en JSON Lines dans data/raw/, un fichier par page :
   boamp_AAAA-MM_pNNN.jsonl
+- Robustesse : jusqu'à 5 tentatives avec backoff exponentiel + jitter sur les erreurs
+  temporaires (429, 500, 502, 503, 504, timeouts), pas de retry sur les erreurs 4xx
+- Reprise : data/raw/checkpoint.json liste les mois déjà collectés, ils sont sautés
+  à la relance (le mois en cours est toujours recollecté)
+- Logs : terminal + logs/ingest.log
 
 Mesures du 03/11/2026 : 84 809 annonces, 922 fichiers, 739 Mo, 135 s.
 
