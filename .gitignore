@@ -12,3 +12,7 @@ data/processed/*
 
 # Secrets
 .env
+
+# Config locale
+.vscode/
+.work-folder-info
