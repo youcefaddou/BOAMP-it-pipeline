@@ -26,6 +26,15 @@ Pipeline de données des appels d'offres IT et télécoms publiés au BOAMP depu
 
 ## Installation
 
+
+
+```bash
+podman run -d --name boamp-postgres -e POSTGRES_USER=boamp -e POSTGRES_PASSWORD=boamp \
+  -e POSTGRES_DB=boamp -p 5432:5432 -v boamp-pgdata:/var/lib/postgresql \
+  docker.io/library/postgres:18
+podman exec -i boamp-postgres psql -U boamp -d boamp < sql/schema.sql
+```
+
 ## Relancer le pipeline de zéro
 
 ## Choix techniques
@@ -62,5 +71,16 @@ Mesures du 03/11/2026 : 84 809 annonces, 922 fichiers, 739 Mo, 135 s.
 
 Mesures du 03/11/2026 : 84 809 annonces, 0 en quarantaine, 4,3 s, 7,7 Mo de Parquet
 (contre 739 Mo de JSON Lines brut).
+
+### Base SQL (sql/schema.sql, scripts/load/load_boamp.py)
+
+- PostgreSQL 18 lancé avec Podman (voir Installation)
+- Tables : annonces (clé primaire idweb, NOT NULL, CHECK sur type_marche) et
+  annonce_descripteurs (clé primaire composée, clé étrangère vers annonces)
+- Chargement : to_sql vers des tables de staging, puis INSERT ... SELECT avec
+  ON CONFLICT, le tout dans une seule transaction : relançable sans doublons
+- Réconciliation source / cible par FULL JOIN (sql/reconciliation.sql) : 0 écart
+
+Mesures du 03/11/2026 : 84 809 annonces, 144 229 descripteurs, 22 s.
 
 ## Dataset publié

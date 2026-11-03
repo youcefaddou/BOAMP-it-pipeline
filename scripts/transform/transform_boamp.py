@@ -42,10 +42,11 @@ def transformer(annonces):
     descripteurs = df[["idweb", "descripteur_libelle"]].explode("descripteur_libelle")
     descripteurs = descripteurs.dropna().rename(columns={"descripteur_libelle": "descripteur"})
     
-    f = df.drop(columns="descripteur_libelle")
+    df = df.drop(columns="descripteur_libelle")
     df["code_departement"] = df["code_departement"].apply(premier)
     df["type_marche"] = df["type_marche"].apply(premier)
     df["titulaire"] = df["titulaire"].apply(lambda t: " ; ".join(t) if isinstance(t, list) else t)
+    df["annonce_lie"] = df["annonce_lie"].apply(lambda a: " ; ".join(a) if isinstance(a, list) else a)
     df["objet"] = df["objet"].str.strip()
     df["nomacheteur"] = df["nomacheteur"].str.strip()
     df["dateparution"] = pd.to_datetime(df["dateparution"], errors="coerce")
