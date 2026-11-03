@@ -1,4 +1,3 @@
-  retirés lors de la transformation
 
 # BOAMP-it-pipeline
 
