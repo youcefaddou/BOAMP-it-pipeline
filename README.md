@@ -35,14 +35,13 @@ podman exec -i boamp-postgres psql -U boamp -d boamp < sql/schema.sql
 
 ## Relancer le pipeline de zéro
 
-
-
 ```bash
 python scripts/ingest/ingest_boamp.py
 python scripts/transform/transform_boamp.py
 podman exec -i boamp-postgres psql -U boamp -d boamp < sql/schema.sql
 python scripts/load/load_boamp.py
 podman exec -i boamp-postgres psql -U boamp -d boamp < sql/index.sql
+python scripts/publish/publish_hub.py
 ```
 
 ## Choix techniques
@@ -122,3 +121,14 @@ colonne de plage ensuite.
 | Execution Time | 29,7 ms              | 15,2 ms              |
 
 ## Dataset publié
+
+- Hub : golgoxiii/boamp-it-annonces (privé pendant le développement)
+- Version : v1.0.0
+- Deux configurations : `annonces` (84 809 lignes) et `descripteurs` (144 229 lignes)
+- Licence : Licence Ouverte / Open Licence (Etalab), celle de la source
+- Script : scripts/publish/publish_hub.py (Dataset Card, push_to_hub, tag)
+
+Chargement :
+
+    from datasets import load_dataset
+    ds = load_dataset("golgoxiii/boamp-it-annonces", "annonces", revision="v1.0.0")
