@@ -35,6 +35,16 @@ podman exec -i boamp-postgres psql -U boamp -d boamp < sql/schema.sql
 
 ## Relancer le pipeline de zéro
 
+
+
+```bash
+python scripts/ingest/ingest_boamp.py
+python scripts/transform/transform_boamp.py
+podman exec -i boamp-postgres psql -U boamp -d boamp < sql/schema.sql
+python scripts/load/load_boamp.py
+podman exec -i boamp-postgres psql -U boamp -d boamp < sql/index.sql
+```
+
 ## Choix techniques
 
 ### Ingestion (scripts/ingest/ingest_boamp.py)
@@ -95,5 +105,20 @@ Mesures du 03/11/2026 : 84 809 annonces, 144 229 descripteurs, 22 s.
 
 Limite : un même acheteur peut apparaître sous plusieurs noms
 (ex. " Voies navigables de France " et " VNF Siège Béthune ")
+
+### Index justifié par EXPLAIN ANALYZE (sql/index.sql, sql/explain_07.sql)
+
+Requête 07 (anti-join NOT EXISTS) : le plan montrait deux Parallel Seq Scan qui
+lisaient toute la table pour ne garder qu'environ 4 % des lignes (filtre sur
+nature_libelle et dateparution).
+
+Index composite `(nature_libelle, dateparution)` : colonne d'égalité en premier,
+colonne de plage ensuite.
+
+|                | Avant                | Après               |
+| -------------- | -------------------- | -------------------- |
+| Accès         | Parallel Seq Scan x2 | Bitmap Index Scan x2 |
+| Buffers        | 14 458               | 543                  |
+| Execution Time | 29,7 ms              | 15,2 ms              |
 
 ## Dataset publié
