@@ -16,3 +16,7 @@ data/processed/*
 # Config locale
 .vscode/
 .work-folder-info
+
+# Logs
+logs/
+
