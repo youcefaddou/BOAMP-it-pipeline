@@ -1,0 +1,22 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Données : jamais versionnées (règle de la fiche)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Secrets
+.env
+
+# Config locale
+.vscode/
+.work-folder-info
+
+# Logs
+logs/
+
