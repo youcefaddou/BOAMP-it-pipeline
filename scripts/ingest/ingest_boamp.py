@@ -104,7 +104,7 @@ async def collecter_mois(session, semaphore, mois):
     pages = await asyncio.gather(*[recuperer_page(session, semaphore, mois, offset) for offset in offsets])
     for numero, page in enumerate(pages, start=1):
         ecrire_page(mois, numero, page["results"])
-        logging.info(f"{mois} : {total} annonces")
+    logging.info(f"{mois} : {total} annonces")
     return total
 
 def configurer_logs():
