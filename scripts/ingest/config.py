@@ -1,6 +1,6 @@
 BASE_URL = "https://boamp-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/boamp/records"
 
-DATE_DEBUT = "2020-01-01"
+DATE_DEBUT = "2015-03-01"
 
 DESCRIPTEURS_IT = [
     "Informatique (prestations de services)",
