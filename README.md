@@ -144,7 +144,7 @@ colonne de plage ensuite.
 
 ## Dataset publié
 
-- Hub : golgoxiii/boamp-it-annonces (privé pendant le développement)
+- Hub : golgoxiii/boamp-it-annonces (public)
 - Version : v1.0.0
 - Deux configurations : `annonces` (84 809 lignes) et `descripteurs` (144 229 lignes)
 - Licence : Licence Ouverte / Open Licence (Etalab), celle de la source
